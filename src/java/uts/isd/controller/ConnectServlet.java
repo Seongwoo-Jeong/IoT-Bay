@@ -15,18 +15,13 @@ import javax.servlet.http.HttpSession;
 
 public class ConnectServlet extends HttpServlet 
 {
-    private DBConnector db;
-    private ShipmentDBManager shipmentManager; 
+    private Database db;
     private Connection conn;
 
     @Override
     public void init() 
     {
-        try {
-            db = new DBConnector();
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(ConnectServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        db = new Database();
 
     }
 

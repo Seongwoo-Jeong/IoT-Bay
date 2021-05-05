@@ -22,6 +22,7 @@ public class ShipmentDetails
     private int postcode;
     private String state;
     private int shipmentDetailsID;
+    private int userAccountID;
 
     public ShipmentDetails(String streetNameNumber, String suburb, int postcode, String state)
     {
@@ -29,6 +30,14 @@ public class ShipmentDetails
         this.suburb = suburb;
         this.postcode = postcode;
         this.state = state;
+    }
+    
+    public ShipmentDetails(String streetNameNumber, String suburb, int postcode, String state, int userID) {
+        this.streetNameNumber = streetNameNumber;
+        this.suburb = suburb;
+        this.postcode = postcode;
+        this.state = state;
+        this.userAccountID = userID;
     }
 
     public int getShipmentDetailsID() 
@@ -40,6 +49,10 @@ public class ShipmentDetails
     {
         this.shipmentDetailsID = shipmentDetailsID;
     }
+    
+    public int getUserAccountID() { return this.userAccountID; }
+    
+    public void setUserAccountID(final int id) { this.userAccountID = id; }
 
     public String getStreetNameNumber()
     {

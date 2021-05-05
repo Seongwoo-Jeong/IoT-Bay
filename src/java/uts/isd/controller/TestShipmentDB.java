@@ -14,24 +14,17 @@ import uts.isd.model.ShipmentDetails;
 public class TestShipmentDB 
 {
     private static Scanner in = new Scanner(System.in);
-    private DBConnector connector;
-    private Connection conn;
-    private ShipmentDBManager db;
+    private static Database database;
 
     public static void main (String [] args) throws SQLException
     {
+        database = new Database();
         (new TestShipmentDB()).runQueries();
     }    
     
     public TestShipmentDB ()
     {
-        try {
-            connector = new DBConnector();
-            conn = connector.openConnection();
-            db = new ShipmentDBManager(conn);
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(TestShipmentDB.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }   
     
     private char readChoice()
@@ -85,29 +78,26 @@ public class TestShipmentDB
         in.nextLine();
         System.out.print(" State: "); // \n
         String state = in.nextLine();
-        try {
-            db.addShipmentDetails(streetNameNumber, suburb, postCode, state, id);
-        } catch (SQLException ex) {
-            Logger.getLogger(TestShipmentDB.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ShipmentDetails details = new ShipmentDetails(streetNameNumber, suburb, postCode, state, id);
+        database.addShipmentDetails(details);
         System.out.println(" Following Details of Shipment has been added! ");
     }
      // case 'R' - Finding shipment
-        private void testRead () throws SQLException 
-        {
+        private void testRead () {
         System.out.print("Shipping ID: ");
         int shippingID = in.nextInt();
         in.nextLine();
         System.out.print("Date (DD/MM/YYYY): "); // \n
-        String dateS = in.nextLine();
-        Shipment shipment = db.findShipment(shippingID, dateS);
+        String date = in.nextLine();
+       
+        Shipment shipment = database.findShipment(shippingID);
         
         if(shipment!= null) 
         {
             System.out.println("     ");
             System.out.println("Shipment ID: " + shippingID +  "\n" + "Shipment Status: " + shipment.getShipmentStatus() + "Courier Name: " + shipment.getCourierName() + "\n" +  "\n" + "Tracking Number: " + shipment.getTrackingNumber());
-            ShipmentDetails shipmentD = db.findShipmentDetails(shipment.getShipmentDetailsID());
-            System.out.println("Delivery Address: " + shipmentD.getStreetNameNumber() + ", " + shipmentD.getSuburb() + ", " + shipmentD.getPostcode() + ", " + shipmentD.getState() + "");
+            ShipmentDetails shipmentDetails = database.findShipmentDetails(shipment.getShipmentDetailsID());
+            System.out.println("Delivery Address: " + shipmentDetails.getStreetNameNumber() + ", " + shipmentDetails.getSuburb() + ", " + shipmentDetails.getPostcode() + ", " + shipmentDetails.getState() + "");
         } 
         else 
         {
@@ -121,35 +111,29 @@ public class TestShipmentDB
         System.out.print("User ID: ");
         int userID = in.nextInt();
         in.nextLine();
-         try {
-            ArrayList<Shipment> shipment = db.fectShipment(userID);
-            System.out.println("Stored Shipping Details:");
-            System.out.println("                        ");
-            System.out.printf("%-10s %-20s %-30s %-20s %-20s \n","Shipment ID", "Shipment Date", "Shipment Status", "Courier Name", "tracking Number" );
-            System.out.println("                         ");
-            shipment.stream().forEach((shipments) -> { 
-                System.out.printf("%-10d %-20s %-30s %-20s %-3s \n",shipments.getShipmentID(), shipments.getShipmentDate(), shipments.getShipmentStatus(), shipments.getCourierName(), shipments.getTrackingNumber());
-            });
-            System.out.println();      
-        } catch (SQLException ex) {
-            Logger.getLogger(TestShipmentDB.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+        ArrayList<Shipment> shipment = database.getAllShipments(userID);
+        System.out.println("Stored Shipping Details:");
+        System.out.println("                        ");
+        System.out.printf("%-10s %-20s %-30s %-20s %-20s \n","Shipment ID", "Shipment Date", "Shipment Status", "Courier Name", "tracking Number" );
+        System.out.println("                         ");
+        shipment.stream().forEach((shipments) -> { 
+            System.out.printf("%-10d %-20s %-30s %-20s %-3s \n",shipments.getShipmentID(), shipments.getShipmentDate(), shipments.getShipmentStatus(), shipments.getCourierName(), shipments.getTrackingNumber());
+        });
+        System.out.println();      
+       
     }     
-     
-    private void viewAllShipment(int id) throws SQLException 
+     // Case "S" 
+    private void viewAllShipment(int id)
     {
-        try {
-            ArrayList<ShipmentDetails> shipmentdetails = db.fectShipmentDetails(id);
-            System.out.println("Stored Shipping Details:");
-            System.out.println("                        ");
-            System.out.printf("%-10s %-20s %-30s %-20s %-20s \n","ID", "StreetNameNumber", "Suburb", "Postcode", "State");
-            System.out.println("                        ");
-            shipmentdetails.stream().forEach((shipmentdetail) -> { 
-                System.out.printf("%-10d %-20s %-30s %-20d %-3s \n",shipmentdetail.getShipmentDetailsID(), shipmentdetail.getStreetNameNumber(), shipmentdetail.getSuburb(),shipmentdetail.getPostcode(), shipmentdetail.getState());
-            });
-            System.out.println();      
-        } catch (SQLException ex) {
-            Logger.getLogger(TestShipmentDB.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ArrayList<ShipmentDetails> shipmentdetails = database.getAllShipmentDetails(id);
+        System.out.println("Stored Shipping Details:");
+        System.out.println("                        ");
+        System.out.printf("%-10s %-20s %-30s %-20s %-20s \n","ID", "StreetNameNumber", "Suburb", "Postcode", "State");
+        System.out.println("                        ");
+        shipmentdetails.stream().forEach((shipmentdetail) -> { 
+            System.out.printf("%-10d %-20s %-30s %-20d %-3s \n",shipmentdetail.getShipmentDetailsID(), shipmentdetail.getStreetNameNumber(), shipmentdetail.getSuburb(),shipmentdetail.getPostcode(), shipmentdetail.getState());
+        });
+        System.out.println();      
     }     
 }

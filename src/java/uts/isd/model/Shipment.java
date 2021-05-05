@@ -14,8 +14,9 @@ public class Shipment {
     private int shipmentDetailsID; 
     private int orderID; 
 
-    public Shipment(String shipmentDate, String ShipmentStatus, String courierName, String trackingNumber, int shipmentDetailsID ,int orderID)
+    public Shipment(int shipmentID, String shipmentDate, String ShipmentStatus, String courierName, String trackingNumber, int shipmentDetailsID ,int orderID)
     {
+        this.shipmentID = shipmentID;
         this.shipmentDate = shipmentDate;
         this.ShipmentStatus = ShipmentStatus;
         this.courierName = courierName;

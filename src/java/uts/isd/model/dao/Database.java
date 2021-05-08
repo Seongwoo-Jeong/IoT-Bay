@@ -13,6 +13,11 @@ import java.sql.SQLException;
 import uts.isd.model.Shipment;
 import uts.isd.model.ShipmentDetails;
 
+/**
+ *
+ * @author Jeongseongwoo
+ */
+
 public class Database {
 
     protected String host = "localhost";
@@ -77,7 +82,7 @@ public class Database {
         preparedStatement.close();
     }
     
-    // Shipping
+    // (START) Shipment Feature - Seongwoo Jeong
     
     public ShipmentDetails findShipmentDetails(final int id) {
         try {
@@ -250,4 +255,6 @@ public class Database {
        }
        return shipmentDetails;
    }
+   
+       // (END) Shipment Feature - Seongwoo Jeong
 }

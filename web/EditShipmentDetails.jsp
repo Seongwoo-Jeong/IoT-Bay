@@ -1,12 +1,23 @@
-<!DOCTYPE html>
-
+<%@page import="uts.isd.model.*"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="uts.isd.model.User_Account"%>
 <html>
-    <title>IoT Bay - Edit Shipment</title>
+    <head>
+    <title>IoT Bay - Add Shipment</title>
     <meta meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <% User_Account user = (User_Account) session.getAttribute("user");
+            String postcodeErr = (String) session.getAttribute("postcodeErr");
+            String addressErr = (String) session.getAttribute("addressErr");
+            String updated = (String) session.getAttribute("updated");
+            Shipment_Details shipmentD = (ShipmentDetails) session.getAttribute("shipmentDet");
+            Customer customer = (Customer) session.getAttribute("customer");
+        
+        %>
     <style>
-        td {
+        td {                    
             font-family:Arial;
             font-size:15px;
             font-weight:normal;
@@ -107,72 +118,65 @@
         .container{
             padding-top: 3%;
         }
-    </style>
+     </style>
+    </head>
+    
     <body>
+        
+        <!--   Top menu category (Home, My Account etc..) code needs here
+    
+        
+        -->
+        
+        
+        <table cellspacing="0" cellpadding="0" height="70%" width="8%" bgcolor="#f0efef"  padding="0px" style="width: 8%; float: left;" > 
+            <tr> <td style="padding-bottom:0px"> <img src="css/account.PNG"  padding="0px"></td> </tr>
+            <tr>  <td style="padding-left: 15px; padding-bottom:0px; color:black"> <b> PAST SHIPMENT <b>
+                    <div>
+                        <ul>
+                            <li> <a href="shipment.jsp" style="color:black">  Find Shipment </a> </li>
+                            <li> <a href="ShipmentDetailsServlet?userID=<%=user.getUserAccountID()%>"> Shipment Details </li>
+                            <li> <a href="ViewShipmentServlet?userID=<%=user.getUserAccountID()%>"> Shipment History </a> </li>
+                        </ul> </div></td>  </tr>
 
-        <div class="top">
-            <div class="bar bar-padding" style="letter-spacing:4px;">
-                <a class="bar-item" >IoT Bay</a>
-                <!-- Right-sided navbar links. Hide them on small screens -->
-                <div style="float:right">
-                    <a href="#home" class="bar-item button">Home</a>
-                    <a href="#cart" class="bar-item button">Cart</a>     
-                    <a class="bar-item button">Account</a>
-
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <p style="text-align:right">You are logged in as &lt; ${user.email} &gt; </p> 
-            <table cellspacing="0" cellpadding="0" height="100%" width="10%" bgcolor="#f0efef"  padding="0px" style="width: 9%; float: right;" > 
-                <tr> <td style="padding-bottom:0px"> <img src=""  padding="0px"></td> </tr>
-                <tr>  <td style="padding-right: 13px; padding-bottom:0px; color:black"> <b> MY ACCOUNT </b>
-                        <div>
-                            <ul>
-                                <li> <a href ='Account.jsp'> Contact Details </li> 
-                                <li> <a href '#' > Change Passwords </li> 
-                                <li>  Newsletter </li>
-                                <li> Payment Details </li>
-                                <li> Wishlist </li>
-                                <li> Language  </li>
-                            </ul> </div></td>  </tr>
-
-                <tr>  <td style="padding-right: 13px; padding-bottom:0px; color:black"> <b> MY SHIPMENT </b> 
-                        <div>
-                            <ul>
-                                <li> Shipment Details</li> 
-                                <li> <a href ='shipment.jsp'> Find Shipment </a> </li>
-                                <li> <a href ='EditShipmentDetails.jsp'> Edit Shipment </a> </li>
-                            </ul> </div></td>  </tr>
-                <tr>  <td style="padding-right: 13px; padding-bottom:0px; color:black"> <b> MY SHOPPING </b> 
-                        <div>
-                            <ul>
-                                <li> <a href="shipment.jsp"> Order History </a>  </li>
-                                <li> Promotion Cards </li> 
-                                <li> Voucher Codes </li>                            
-                                <li> Gift Cards </li>
-                                <li> Contact Staff </li>
-                            </ul> </div></td>  </tr></table>
-
+        </table>
+                        
+                        
+        <a href="ShipmentDetailsServlet?userID=<%=user.getUserAccountID()%>"><h1 class="orangecolor"> < </h1> </a>
+        <h1 style="color:lightsalmon; text-align:left; margin-left:20px;display:inline-block;font-size: 25px; color: black;"> Edit Shipment Details: &nbsp; <%= (updated != null ? updated : "")%> <%= (postcodeErr != null ? postcodeErr : "")%></div>  <%= (addressErr != null ? addressErr : "")%></div></h1>
+        <form action="UpdateShipmentDetailsServlet?shipmentDetailsID=<%=shipmentDetails.getShipmentDetailsID()%>" method="post">
             
-            <table> 
-            
-            <table style="border-right:3px; border-left:0px; border-bottom:0px; border-top:0px; padding:4.3px; 
-                
-                
-                
-           
+            <table style="border-bottom:1px; border-left:0px; border-right:0px; border-top:0px; border-left:0px; padding:3.8px; margin-left:300px;">
+
+                <tr><td>Street Address </td></tr>
+                <tr><td><input type="text" class="no-outline" name="streetAddress" placeholder="Street Address" value="<%=shipmentDetails.getStreetNameNumber()%>" required></td></tr>
+                <tr><td>Suburb</td></tr>
+                <tr><td><input type="text" class="no-outline" name="suburb" placeholder="Suburub Name"  value="<%=shipmentDetails.getSuburb()%>"required></td></tr>
+                <tr><td>Postcode</td></tr>
+                <tr><td><input type="int" class="no-outline" name="postcode" placeholder="Postcode" value="<%=shipmentDetails.getPostcode()%>" required></td></tr>
+
+                <tr><td><label for="states"> State </state></td></tr>
+                <tr><td><select id="state" name="state" value="<%=shipmentDetails.getState()%>">
+                            <option> NSW </option>
+                            <option> QLD </option>
+                            <option> VIC </option>
+                            <option> ACT </option>
+                            <option> TAS </option>
+                            <option> NT </option>
+                            <option> WA </option>
+                            <option> SA </option>
+                        </select>
+                    </td></tr>                
             </table>
-                
-                
-            <table cellspacing="0" cellpadding="0" width="90%">
-                <tr> <th> <a href="Category.jsp" > <div class="center"><img src="./Img/home.png" width="23px" height="28px"></div>Category </a> </th>
-                    <th><a href="Main.jsp"><div class="center"><img src="./Img/new.png" width="23px" height="28px"> </div> New Arrivals </a></th>                
-            </table>                      
+            <br><br>
+            <a href="ShipmentDetailsServlet?&userID=<%=user.getUserAccountID()%>"><button class="button3" type="button" style="margin-left:95px;"> <b>CANCEL</b> </button></a>
+           
+            <button class="button2" type="submit" style="margin-left:0px"><b> UPDATE </b> </button>
 
 
-
-        </div>
-
+        </form>
+<% session.setAttribute("updated", null); %>
+                        
+        
     </body>        
 </html>

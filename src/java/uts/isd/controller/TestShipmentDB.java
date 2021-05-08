@@ -95,7 +95,7 @@ public class TestShipmentDB
         if(shipment!= null) 
         {
             System.out.println("     ");
-            System.out.println("Shipment ID: " + shippingID +  "\n" + "Shipment Status: " + shipment.getShipmentStatus() + "Courier Name: " + shipment.getCourierName() + "\n" +  "\n" + "Tracking Number: " + shipment.getTrackingNumber());
+            System.out.println("Shipment ID: " + shippingID +  "\n" + "Shipment Status: " + shipment.getShipmentStatus() + "\n" + "Courier Name: " + shipment.getCourierName() + "\n" + "Tracking Number: " + shipment.getTrackingNumber());
             ShipmentDetails shipmentDetails = database.findShipmentDetails(shipment.getShipmentDetailsID());
             System.out.println("Delivery Address: " + shipmentDetails.getStreetNameNumber() + ", " + shipmentDetails.getSuburb() + ", " + shipmentDetails.getPostcode() + ", " + shipmentDetails.getState() + "");
         } 

@@ -5,7 +5,6 @@
  */
 package uts.isd.controller;
 
-import uts.isd.model.Shipment;
 import com.sun.istack.logging.Logger;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,35 +20,31 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-
 /**
  *
  * @author Jeongseongwoo
  */
-public class ViewShipmentServlet extends HttpServlet {
+public class ShipmentDetailsServlet extends HttpServlet {
 
    @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response)
            throws ServletException, IOException {
        HttpSession session = request.getSession();
-       
+       ShipmentValidator validator = new ShipmentValidator();
        int userID = Integer.parseInt(request.getParameter("userID"));
-       Database manager = (Database) session.getAttribute("Database");
-        ArrayList <Shipment> shipmentList = null;
-        session.setAttribute("shipmentErr", null);
-       
-       
+       Database manager = (Database) session.getAttribute("shipmentManager");
+        ArrayList <ShipmentDetails> shipmentD = null;
+        session.setAttribute("existErr", null);
+        session.setAttribute("shipmentD", null);
+        
        try {
-           shipmentList = manager.getAllShipments(userID);
-           if (shipmentList != null) {
-           session.setAttribute("shipmentList", shipmentList);
-           
-           request.getRequestDispatcher("viewshipment.jsp").include(request,response);
-           
+           shipmentD = manager.getAllShipments(userID);
+           if (shipmentD != null) {
+           session.setAttribute("shipmentD", shipmentD);
+           request.getRequestDispatcher("shipmentdetails.jsp").include(request,response);
            } else {
-               session.setAttribute("shipmentList", null);
-               session.setAttribute("shipmentErr", "You don't have any exisiting or previous Shipments!");
-               request.getRequestDispatcher("viewshipment.jsp").include(request, response);
+               session.setAttribute("existErr", "cannot find saved shipment addresses");
+               request.getRequestDispatcher("shipmentdetails.jsp").include(request, response);
            }
        } catch (SQLException ex) {
            java.util.logging.Logger.getLogger(ShipmentDetailsServlet.class.getName()).log(Level.SEVERE, null, ex);

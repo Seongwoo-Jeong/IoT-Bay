@@ -34,12 +34,12 @@ public class ConnectServlet extends HttpServlet
 
         try 
         {
-            shipmentManager = new ShipmentDBManager(conn);
+            Database = new Database(conn);
             // other DBManagers should also be listed here
         } catch (SQLException ex) {
             Logger.getLogger(ConnectServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        session.setAttribute("shipmentManager", shipmentManager);
+        session.setAttribute("Database", Database);
     // other features should also be included here
 
     }

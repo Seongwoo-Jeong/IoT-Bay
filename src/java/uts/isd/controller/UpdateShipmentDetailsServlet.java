@@ -50,23 +50,21 @@ public class UpdateShipmentDetailsServlet extends HttpServlet {
     // int userAccountID = Integer.parseInt(request.getParameter("userID"));
     
     ShipmentDetails shipmentD = new ShipmentDetails (streetNameNumber, suburb, postcode, state);
-            try {
-                if (!validator.validateShipment(streetNameNumber)) {
-                    session.setAttribute("NameNumberErr", "Format is incorrect");
-                    
-                    request.getRequestDispatcher("editshipmentdetails.jsp").include(request,response);
-                    
-                } else if (!validator.validatePostcode(postcode)){
-                      session.setAttribute("postcodeErr", "postcode invalid, please try again.");        
-         request.getRequestDispatcher("editshipmentdetails.jsp").include(request,response);
-                } else{
-                   manager.updateShipmentDetails(shipmentDetailsID, streetNameNumber, suburb, postcode, state);
-                   session.setAttribute("shipmentD", shipmentD); 
-                   session.setAttribute("updated", "Shipment Details were succesfully updated!");
-                    request.getRequestDispatcher("editshipmentdetails.jsp").include(request,response);
-                }
-            } catch (SQLException ex) {
-           Logger.getLogger(UpdateShipmentDetailsServlet.class.getName()).log(Level.SEVERE, null, ex);
-       }
+
+            if (!validator.validateShipmentNameNumber(streetNameNumber)) {
+                session.setAttribute("NameNumberErr", "Format is incorrect");
+
+                request.getRequestDispatcher("editshipmentdetails.jsp").include(request,response);
+
+            } else if (!validator.validatePostcode(postcode)){
+                  session.setAttribute("postcodeErr", "postcode invalid, please try again.");        
+            request.getRequestDispatcher("editshipmentdetails.jsp").include(request,response);
+            } else{
+               manager.updateShipmentDetails(new ShipmentDetails(shipmentDetailsID, streetNameNumber, suburb, postcode, state));
+               session.setAttribute("shipmentD", shipmentD); 
+               session.setAttribute("updated", "Shipment Details were succesfully updated!");
+                request.getRequestDispatcher("editshipmentdetails.jsp").include(request,response);
+            }
+
         }
     }

@@ -40,20 +40,20 @@ public class TestShipmentDB
         while ((c = readChoice()) != '*') {
             switch (c) {
                 case 'C': // Implementation of adding shipment  (1)
-                    testAdd(4); 
+                    testAdd(); 
                     break;
                     
                 case 'R': // Implementation of Finding shipment using shipmentID and shipmentDate (2) 
                    testRead();
                    break;
                    
-                case 'U':  // Finding all shipment (4)
+                case 'U':  // View all shipment (4)
                     findingShipment();
                     break;
                     
-                // case 'D' // Optional function | Implementation of Deleting shipment | not required
-                    //testDelate();
-                   // break;
+                case 'D':
+                    //testDelete();
+                    break;
                     
                 case 'S': // Implementation of Showing shipment (3)
                     viewAllShipment(4);
@@ -67,19 +67,20 @@ public class TestShipmentDB
     
     // case 'c' - adding shipment details
     // \n
-     private void testAdd(int id) 
+     private void testAdd() 
      {
         System.out.print(" Street Name Number: ");
         String streetNameNumber = in.nextLine();
         System.out.print(" Suburb: "); // \n
         String suburb = in.nextLine();
         System.out.print(" Postcode: "); // \n
-        int postCode = in.nextInt();
-        in.nextLine();
+        int postCode = Integer.parseInt(in.nextLine());
         System.out.print(" State: "); // \n
         String state = in.nextLine();
-        ShipmentDetails details = new ShipmentDetails(streetNameNumber, suburb, postCode, state, id);
-        database.addShipmentDetails(details);
+        System.out.print(" Shipment ID: ");
+        int shipmentID = Integer.parseInt(in.nextLine());
+        ShipmentDetails details = new ShipmentDetails(streetNameNumber, suburb, postCode, state);
+        database.addShipmentDetails(details, shipmentID);
         System.out.println(" Following Details of Shipment has been added! ");
     }
      // case 'R' - Finding shipment
@@ -122,7 +123,18 @@ public class TestShipmentDB
         });
         System.out.println();      
        
+    }  
+        // case "D" | Deleting all shipment
+        private void DeleteShipment(int id)
+    {
+        System.out.print(" ShipmentDetails ID ");
+        String shipmentDetails = in.nextLine();
+
+        int shipmentID = Integer.parseInt(in.nextLine());
+        database.deleteShipmentDetails(shipmentID);
+        System.out.println(" Following Details of Shipment has been Removed! ");     
     }     
+        
      // Case "S" 
     private void viewAllShipment(int id)
     {

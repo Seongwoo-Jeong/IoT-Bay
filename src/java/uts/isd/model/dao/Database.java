@@ -137,17 +137,29 @@ public class Database {
     
        /* Assignment2 Requirements (create or add details in shipment feature), userAccount ID is generated */ 
    
-   public void addShipmentDetails(final ShipmentDetails details) {
+   public void addShipmentDetails(final ShipmentDetails details, final int shipmentID) {
        this.openConnection();
        try {
-           final PreparedStatement addShipping = connection.prepareStatement("INSERT INTO Shipment_Details (streetnamenumber, suburb, postcode, state) VALUES (?,?,?,?)");
+           final PreparedStatement addShipping = connection.prepareStatement("INSERT INTO Shipment_Details (streetnamenumber, suburb, postcode, state) VALUES (?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
            addShipping.setString(1, details.getStreetNameNumber());
            addShipping.setString(2, details.getSuburb());
            addShipping.setInt(3, details.getPostcode());
            addShipping.setString(4, details.getState());
            addShipping.execute();
-           this.closeConnection();
-           addShipping.close();
+           final ResultSet result = addShipping.getGeneratedKeys();
+           
+           while (result.next()) {
+               details.setShipmentDetailsID(result.getInt(1));
+           }
+          
+           this.closeConnections(result, addShipping);
+           
+           this.openConnection();
+           final PreparedStatement addToShipment = connection.prepareStatement("UPDATE Shipment SET shipmentdetailsid=? WHERE shipmentID=?");
+           addToShipment.setInt(1, details.getShipmentDetailsID());
+           addToShipment.setInt(2, shipmentID);
+           addToShipment.executeUpdate();
+           this.closeConnections(result, addToShipment);
        } catch (SQLException e) {
            e.printStackTrace();
        }

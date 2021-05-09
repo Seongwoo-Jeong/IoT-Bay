@@ -31,14 +31,9 @@ public class DeleteShipmentDetailsServlet extends HttpServlet {
         int userID = Integer.parseInt(request.getParameter("userID"));
         int shipmentDetailsID = Integer.parseInt(request.getParameter("shipmentDetailsID"));
         Database manager = (Database) session.getAttribute("shipmentManager");
-        try {
             manager.deleteShipmentDetails(shipmentDetailsID);
             request.getRequestDispatcher("/ShipmentDetailsServlet?userID=" + userID).include(request,response);
           /* response.sendRedirect("/ShipmentServlet?userID=3"); */
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(DeleteShipmentDetailsServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
     }
 }

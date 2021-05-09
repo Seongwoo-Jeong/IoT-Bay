@@ -16,7 +16,6 @@ import javax.servlet.http.HttpSession;
 public class ConnectServlet extends HttpServlet 
 {
     private Database db;
-    private Connection conn;
 
     @Override
     public void init() 
@@ -30,16 +29,7 @@ public class ConnectServlet extends HttpServlet
 
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        conn = db.openConnection();
-
-        try 
-        {
-            Database = new Database(conn);
-            // other DBManagers should also be listed here
-        } catch (SQLException ex) {
-            Logger.getLogger(ConnectServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        session.setAttribute("Database", Database);
+        session.setAttribute("Database", db);
     // other features should also be included here
 
     }
@@ -47,11 +37,6 @@ public class ConnectServlet extends HttpServlet
     @Override
     public void destroy() {
 
-        try {
-            db.closeConnection();
-        } catch (SQLException ex) {
-            Logger.getLogger(ConnectServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
 }

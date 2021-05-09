@@ -38,22 +38,18 @@ public class ViewShipmentServlet extends HttpServlet {
         ArrayList <Shipment> shipmentList = null;
         session.setAttribute("shipmentErr", null);
        
-       
-       try {
-           shipmentList = manager.getAllShipments(userID);
-           if (shipmentList != null) {
-           session.setAttribute("shipmentList", shipmentList);
-           
-           request.getRequestDispatcher("viewshipment.jsp").include(request,response);
-           
-           } else {
-               session.setAttribute("shipmentList", null);
-               session.setAttribute("shipmentErr", "You don't have any exisiting or previous Shipments!");
-               request.getRequestDispatcher("viewshipment.jsp").include(request, response);
-           }
-       } catch (SQLException ex) {
-           java.util.logging.Logger.getLogger(ShipmentDetailsServlet.class.getName()).log(Level.SEVERE, null, ex);
-       }
+        shipmentList = manager.getAllShipments(userID);
+        if (shipmentList != null) {
+        session.setAttribute("shipmentList", shipmentList);
+
+        request.getRequestDispatcher("viewshipment.jsp").include(request,response);
+
+        } else {
+            session.setAttribute("shipmentList", null);
+            session.setAttribute("shipmentErr", "You don't have any exisiting or previous Shipments!");
+            request.getRequestDispatcher("viewshipment.jsp").include(request, response);
+        }
+
        
        
    }

@@ -50,14 +50,10 @@ public class AddShipmentDetailsServlet extends HttpServlet {
          request.getRequestDispatcher("addShipmentDetails.jsp").include(request,response);
      } 
      else { 
-         try {
-              session.setAttribute("addedSuccess", "Shipment detail has been added to your account.");
-             manager.Database(streetNameNumber, suburb, postcode, state, userID);
-             request.getRequestDispatcher("addShipmentDetails.jsp").include(request,response);
-         } catch (SQLException ex) {
-             Logger.getLogger(AddShipmentDetailsServlet.class.getName()).log(Level.SEVERE, null, ex);
-         
-     }
+     
+        manager.addShipmentDetails(new ShipmentDetails(streetNameNumber, suburb, postcode, state), 1);
+        session.setAttribute("addedSuccess", "Shipment detail has been added to your account.");
+        
      
      }
  }

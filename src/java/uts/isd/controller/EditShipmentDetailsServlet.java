@@ -37,24 +37,18 @@ public class EditShipmentDetailsServlet extends HttpServlet {
         
         Database manager = (Database) session.getAttribute("shipmentManager");
         
-        Database shipmentD = null;
-        
-        
-        try{
+        ShipmentDetails shipmentD = null;
+       
             shipmentD = manager.findShipmentDetails(shipmentDetailsID);
             if(shipmentD != null) {
-                session.setAttribute("shipmentDet", shipmentDet);
+                session.setAttribute("shipmentDet", shipmentD);
                 shipmentD.setShipmentDetailsID(shipmentDetailsID);
                 request.getRequestDispatcher("editshipmentdetails.jsp").include(request,response);
             } else {
                 session.setAttribute("existErr", "Shipment Detail does not exist in the Database!");
                 request.getRequestDispatcher("EditShipmentDetails.jsp").include(request,response);
             }
-             
             
-        } catch (SQLException ex) {
-            Logger.getLogger(EditShipmentDetailsServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
        
 
     }

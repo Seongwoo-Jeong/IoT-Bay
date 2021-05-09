@@ -37,18 +37,16 @@ public class ShipmentDetailsServlet extends HttpServlet {
         session.setAttribute("existErr", null);
         session.setAttribute("shipmentD", null);
         
-       try {
-           shipmentD = manager.getAllShipments(userID);
-           if (shipmentD != null) {
-           session.setAttribute("shipmentD", shipmentD);
-           request.getRequestDispatcher("shipmentdetails.jsp").include(request,response);
-           } else {
-               session.setAttribute("existErr", "cannot find saved shipment addresses");
-               request.getRequestDispatcher("shipmentdetails.jsp").include(request, response);
-           }
-       } catch (SQLException ex) {
-           java.util.logging.Logger.getLogger(ShipmentDetailsServlet.class.getName()).log(Level.SEVERE, null, ex);
-       }
+ 
+        shipmentD = manager.getAllShipmentDetails(userID);
+        if (shipmentD != null) {
+        session.setAttribute("shipmentD", shipmentD);
+        request.getRequestDispatcher("shipmentdetails.jsp").include(request,response);
+        } else {
+            session.setAttribute("existErr", "cannot find saved shipment addresses");
+            request.getRequestDispatcher("shipmentdetails.jsp").include(request, response);
+        }
+     
        
        
    }

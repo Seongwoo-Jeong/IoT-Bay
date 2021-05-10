@@ -2,17 +2,17 @@
 <%@page import="uts.isd.model.ShipmentDetails"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="uts.isd.model.User_Account"%>
+<%@page import="uts.isd.model.UserAccount"%>
 <html>
     <head>
     <title>IoT Bay - Shipment</title>
     <meta meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-        <% User_Account user = (User_Account) session.getAttribute("user");
+        <% UserAccount user = (UserAccount) session.getAttribute("user");
             ArrayList<ShipmentDetails> shipmentD = (ArrayList) session.getAttribute("shipmentD");
             String existErr = (String) session.getAttribute("existErr");
-            request.setAttribute("shipmentList", shipmentDet);
+            request.setAttribute("shipmentList", shipmentD);
             
         %>
     <style>
